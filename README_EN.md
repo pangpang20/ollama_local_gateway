@@ -28,7 +28,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 ### 2. Pull Models
 
 ```bash
-ollama pull qwen3-embedding-4b
+ollama pull qwen3-embedding:4b
 ollama pull qwen3:4b
 ```
 
@@ -96,7 +96,7 @@ curl -X POST http://localhost:8000/gateway/ti/qwen3-coder-30b/v1/chat/completion
 |---------------------|-------------|---------------|
 | `SZC_API_KEY` | API verification key | Empty (no verification) |
 | `OLLAMA_BASE_URL` | Ollama service URL | `http://localhost:11434` |
-| `EMBEDDING_MODEL` | Embedding model name | `qwen3-embedding-4b` |
+| `EMBEDDING_MODEL` | Embedding model name | `qwen3-embedding:4b` |
 | `CHAT_MODEL` | Chat model name | `qwen3:4b` |
 | `GATEWAY_HOST` | Gateway listen address | `0.0.0.0` |
 | `GATEWAY_PORT` | Gateway port | `8000` |
@@ -145,7 +145,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 ## Notes
 
-1. **Model Availability**: Ensure `qwen3-embedding-4b` and `qwen3:4b` models are available in Ollama's official library, otherwise modify model names in `config.py`
+1. **Model Availability**: Ensure `qwen3-embedding:4b` and `qwen3:4b` models are available in Ollama's official library, otherwise modify model names in `config.py`
 2. **GPU Requirements**: Running 4B+ parameter models requires sufficient GPU VRAM (8GB+ recommended)
 3. **API Key**: Always set `SZC_API_KEY` in production environments
 
