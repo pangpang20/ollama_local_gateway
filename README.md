@@ -28,7 +28,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 ### 2. 拉取模型
 
 ```bash
-ollama pull qwen3-embedding-4b
+ollama pull qwen3-embedding:4b
 ollama pull qwen3:4b
 ```
 
@@ -96,7 +96,7 @@ curl -X POST http://localhost:8000/gateway/ti/qwen3-coder-30b/v1/chat/completion
 |---------|------|--------|
 | `SZC_API_KEY` | API 验证密钥 | 空（不验证） |
 | `OLLAMA_BASE_URL` | Ollama 服务地址 | `http://localhost:11434` |
-| `EMBEDDING_MODEL` | Embedding 模型名称 | `qwen3-embedding-4b` |
+| `EMBEDDING_MODEL` | Embedding 模型名称 | ` qwen3-embedding:4b` |
 | `CHAT_MODEL` | 对话模型名称 | `qwen3:4b` |
 | `GATEWAY_HOST` | 网关监听地址 | `0.0.0.0` |
 | `GATEWAY_PORT` | 网关端口 | `8000` |
@@ -145,7 +145,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 ## 注意事项
 
-1. **模型可用性**: 确保 Ollama 官方库中有 `qwen3-embedding-4b` 和 `qwen3:4b` 模型，否则需要修改 `config.py` 中的模型名称
+1. **模型可用性**: 确保 Ollama 官方库中有 ` qwen3-embedding:4b` 和 `qwen3:4b` 模型，否则需要修改 `config.py` 中的模型名称
 2. **GPU 要求**: 运行 4B+ 参数模型需要足够的 GPU 显存（建议 8GB+）
 3. **API Key**: 生产环境务必设置 `SZC_API_KEY`
 
