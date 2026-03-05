@@ -64,9 +64,9 @@ sleep 5
 echo "正在拉取模型..."
 
 # 拉取 qwen3 embedding 模型
-echo "拉取 qwen3-embedding-4b 模型..."
-ollama pull qwen3-embedding-4b || {
-    echo "警告：qwen3-embedding-4b 模型拉取失败，可能需要使用其他 embedding 模型"
+echo "拉取  qwen3-embedding:4b 模型..."
+ollama pull  qwen3-embedding:4b || {
+    echo "警告： qwen3-embedding:4b 模型拉取失败，可能需要使用其他 embedding 模型"
 }
 
 # 拉取 qwen3 coder 模型
