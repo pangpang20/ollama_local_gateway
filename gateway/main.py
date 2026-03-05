@@ -109,8 +109,11 @@ async def generate_stream_response(request: ChatRequest, options: dict):
 
     messages = [{"role": m.role, "content": m.content} for m in request.messages]
 
+    # 使用请求中的 model 参数，如果为空则使用默认值
+    model = request.model if request.model else CHAT_MODEL
+
     async for chunk in ollama.chat(
-        model=CHAT_MODEL,
+        model=model,
         messages=messages,
         stream=True,
         options=options
@@ -152,12 +155,22 @@ async def generate_non_stream_response(request: ChatRequest, options: dict):
     """生成非流式响应"""
     messages = [{"role": m.role, "content": m.content} for m in request.messages]
 
-    result = await ollama.chat(
-        model=CHAT_MODEL,
+    # 使用请求中的 model 参数，如果为空则使用默认值
+    model = request.model if request.model else CHAT_MODEL
+
+    # ollama.chat 始终返回异步生成器，需要用 async for 获取结果
+    result = None
+    async for chunk in ollama.chat(
+        model=model,
         messages=messages,
         stream=False,
         options=options
-    )
+    ):
+        result = chunk
+        break  # 非流式模式下只取第一个结果
+
+    if not result:
+        raise HTTPException(status_code=500, detail="Empty response from Ollama")
 
     chat_id = f"chatcmpl-{uuid.uuid4().hex}"
     created = int(time.time())
