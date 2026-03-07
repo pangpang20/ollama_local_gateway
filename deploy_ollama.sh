@@ -28,12 +28,29 @@ if [ -f "$OFFLINE_PACKAGE" ]; then
         exit 1
     fi
 
-    # 解压离线安装包
+    # 解压离线安装包到临时目录
     echo "正在解压安装包..."
-    sudo tar --use-compress-program=zstd -xf "$OFFLINE_PACKAGE" -C /usr/local/bin/ || {
+    TEMP_DIR=$(mktemp -d)
+    sudo tar --use-compress-program=zstd -xf "$OFFLINE_PACKAGE" -C "$TEMP_DIR" || {
         echo "解压失败，请检查安装包是否完整"
+        rm -rf "$TEMP_DIR"
         exit 1
     }
+
+    # 复制文件到系统目录
+    echo "正在安装文件..."
+    sudo cp -r "$TEMP_DIR/bin/ollama" /usr/local/bin/
+    sudo cp -r "$TEMP_DIR/lib/ollama" /usr/local/lib/ollama
+
+    # 清理临时目录
+    rm -rf "$TEMP_DIR"
+
+    # 设置环境变量（添加到用户 profile）
+    if ! grep -q "OLLAMA_MODELS" ~/.bashrc 2>/dev/null; then
+        echo "" >> ~/.bashrc
+        echo "export OLLAMA_MODELS=/usr/local/lib/ollama" >> ~/.bashrc
+        echo "export LD_LIBRARY_PATH=/usr/local/lib/ollama:\$LD_LIBRARY_PATH" >> ~/.bashrc
+    fi
 
     # 设置执行权限
     sudo chmod +x /usr/local/bin/ollama
