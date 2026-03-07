@@ -79,7 +79,9 @@ async def create_chat_completion(
         raise HTTPException(status_code=401, detail="Invalid API Key")
 
     # 构建 Ollama 选项
-    options = {}
+    options = {
+        "keep_alive": -1  # -1 = 永久驻留内存，直到手动卸载或重启 Ollama
+    }
     if request.max_tokens:
         options["num_predict"] = request.max_tokens
     if request.top_p:
