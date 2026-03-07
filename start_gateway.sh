@@ -15,6 +15,16 @@ if [ -z "$SZC_API_KEY" ]; then
     echo "警告：SZC_API_KEY 环境变量未设置，将跳过 API Key 验证"
 fi
 
+# 检查 Ollama 是否已启动
+if ! pgrep -x "ollama" > /dev/null; then
+    echo "Ollama 未运行，正在后台启动..."
+    nohup ollama serve > /var/log/ollama.log 2>&1 &
+    sleep 2
+    echo "Ollama 已启动（后台运行）"
+else
+    echo "Ollama 已在后台运行"
+fi
+
 # 安装依赖
 echo "检查 Python 依赖..."
 $PIP_CMD install -r requirements.txt -q
